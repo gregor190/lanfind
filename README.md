@@ -1,0 +1,1 @@
+usr/share/doc/lanfind/README.md

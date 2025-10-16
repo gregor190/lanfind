@@ -46,6 +46,11 @@ for f in "${REQUIRED_FILES[@]}"; do
         exit 2
     fi
 done
+if ! command -v nmap >/dev/null 2>&2; then
+  echo "Error: nmap is not installed or not in PATH."
+  echo "Please install nmap to use LANFind."
+  exit 2
+fi
 
 # ---------------------------------------------------------------------
 # Validate gawk binary:
@@ -63,8 +68,8 @@ fi
 # ---------------------------------------------------------------------
 if [[ -z "${1:-}" ]]; then
     echo "Usage:"
-    echo "  ./run_mini_tool.sh -c             # output to console"
-    echo "  ./run_mini_tool.sh -o file.txt    # output to file"
+    echo "  ./run_mini_tool.sh -c              output to console"
+    echo "  ./run_mini_tool.sh -o file.txt    output to file"
     echo "./run_mini_tool.sh -l to see it's ascii logo."
     exit 1
 fi
