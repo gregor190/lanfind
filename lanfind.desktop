@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=LANFind
+Comment=LAN mapping ritual by Gregor
+Exec=AppRun
+Icon=lanfind
+Type=Application
+Categories=Network;
+X-Copyright=Copyright (C) 2025 Gregor
+X-License=GPL v3 - See https://www.gnu.org/licenses/
+X-Notes=This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License...

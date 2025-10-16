@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+  <id>lanfind</id>
+  <name>LANFind</name>
+  <summary>Lightweight LAN discovery tool</summary>
+  <description>
+    <p>Uses gawk and nmap to find live hosts on your local network.</p>
+  </description>
+  <developer_name>Gregor</developer_name>
+  <url type="homepage">https://github.com/gregor/lanfind</url>
+  <license>GPL-3.0</license>
+</component>
+

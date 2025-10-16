@@ -1,0 +1,12 @@
+#!/bin/bash
+# AppRun - shrine-safe launcher for LANFind
+
+# If launched from GUI (no terminal), show a dialog
+if [[ -z "$DISPLAY" || -t 1 ]]; then
+    # Terminal is present—invoke CLI tool
+    exec "$(dirname "$0")/usr/bin/run_lanfind" "$@"
+else
+    # No terminal—show GUI warning
+    kdialog --msgbox "LANFind is a command-line tool.\nPlease run it from a terminal:\n\n./LANFind-x86_64.AppImage -c"
+    exit 0
+fi

@@ -1,0 +1,112 @@
+#!/bin/bash
+# lanfind - LAN mapping ritual by Gregor
+# Copyright (C) 2025 Gregor
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+# -----------------------------------------------------------------------------
+# lanfind - Lightweight LAN discovery tool
+# -----------------------------------------------------------------------------
+# Uses 'gawk' and 'nmap' to automatically:
+#   1. Detect the local private IPv4 subnet.
+#   2. Perform a host discovery scan on that subnet.
+#   3. Output live host information to console or file.
+#
+# Exit codes:
+#   0  Success
+#   1  Usage or argument error
+#   2  Missing required file
+#   3  Runtime failure (corrupted binary, unreadable file, etc.)
+# -----------------------------------------------------------------------------
+
+# Error handling: stop on errors, undefined vars, and failed pipes.
+# ---------------------------------------------------------------------
+set -euo pipefail
+
+# ---------------------------------------------------------------------
+# Check for required files before doing anything.
+# These are critical for the tool to function properly.
+# ---------------------------------------------------------------------
+REQUIRED_FILES=(./gawk ./get_subnet.awk ./parse_nmap.awk)
+
+for f in "${REQUIRED_FILES[@]}"; do
+    if [[ ! -e "$f" ]]; then
+        echo "Error: missing required file: $f" >&2
+        exit 2
+    fi
+done
+
+# ---------------------------------------------------------------------
+# Validate gawk binary:
+# - must be executable (-x)
+# - must not be empty (-s)
+# If this fails, treat it as a runtime failure.
+# ---------------------------------------------------------------------
+if [[ ! -x ./gawk || ! -s ./gawk ]]; then
+    echo "Error: gawk is missing, not executable, or corrupted" >&2
+    exit 3
+fi
+
+# ---------------------------------------------------------------------
+# Usage message (printed when no args are passed).
+# ---------------------------------------------------------------------
+if [[ -z "${1:-}" ]]; then
+    echo "Usage:"
+    echo "  ./run_mini_tool.sh -c             # output to console"
+    echo "  ./run_mini_tool.sh -o file.txt    # output to file"
+    echo "./run_mini_tool.sh -l to see it's ascii logo."
+    exit 1
+fi
+
+# ---------------------------------------------------------------------
+# Mode: Console output (-c)
+# ---------------------------------------------------------------------
+if [[ "$1" == "-c" ]]; then
+    # Get subnet -> scan -> parse and display results
+    ip a \
+        | ./gawk -f ./get_subnet.awk \
+        | xargs -I{} nmap -sn {} \
+        | ./gawk -f ./parse_nmap.awk
+
+# ---------------------------------------------------------------------
+# Mode: File output (-o <filename>)
+# ---------------------------------------------------------------------
+elif [[ "$1" == "-o" && -n "${2:-}" ]]; then
+    # Same as above, but redirect final output to a file
+    ip a \
+        | ./gawk -f ./get_subnet.awk \
+        | xargs -I{} nmap -sn {} \
+        | ./gawk -f ./parse_nmap.awk > "$2"
+
+# ---------------------------------------------------------------------
+# Mode: Logo display (-l)
+# ---------------------------------------------------------------------
+elif [[ "$1" == "-l" ]]; then
+    echo " _                    _     _           _ "
+    echo "| |    __ _ _   _  __| |   / \   ___ __| |"
+    echo "| |   / _\` | | | |/ _\` |  / _ \ / __/ _\` |"
+    echo "| |__| (_| | |_| | (_| | / ___ \ (_| (_| |"
+    echo "|_____\__,_|\__,_|\__,_|/_/   \_\___\__,_|"
+    echo ""
+    echo "Lightweight LAN discovery tool"
+    echo "--------------------------------"
+    echo "Uses gawk and nmap to find live hosts on your local network."
+
+# ---------------------------------------------------------------------
+# Invalid usage handler
+# ---------------------------------------------------------------------
+else
+    echo "Invalid arguments. Use -c or -o <file>"
+    exit 1
+fi
