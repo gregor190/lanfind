@@ -24,8 +24,8 @@ LANFind is fully portable — it comes with its own `gawk` interpreter and doesn
 ```
 lanfind-app/
 ├── AppRun                     # AppImage entry point
-├── lanfind.desktop             # Desktop entry file
-├── lanfind.png                 # Application icon
+├── lanfind.desktop            # Desktop entry file
+├── lanfind.png                # Application icon
 ├── usr/
 │   ├── bin/
 │   │   ├── gawk               # Bundled AWK interpreter
@@ -57,7 +57,8 @@ Or launch the AppImage directly:
 ./LANFind-x86_64.AppImage
 ```
 
-If no terminal is detected, LANFind will show a small dialog explaining that it’s a command-line tool.
+If no terminal is detected, LANFind will attempt to show a small pop-up message using **kdialog**.  
+If `kdialog` is not installed, the message will simply not appear — the tool will still run correctly.
 
 ---
 
@@ -65,6 +66,7 @@ If no terminal is detected, LANFind will show a small dialog explaining that it�
 
 - `nmap` installed on the system  
 - A POSIX-compatible shell environment  
+- (Optional) `kdialog` for GUI messages when launched outside a terminal  
 - A Linux distribution that supports **AppImage**
 
 ---
