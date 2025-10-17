@@ -1,73 +1,99 @@
 # LANFind
 
-**LANFind** is a lightweight LAN discovery tool packaged as an AppImage. It uses AWK and shell scripting to detect your local IPv4 subnet and scan for live hosts using `nmap`. Designed for shrine-safe portability, it includes a bundled `gawk` interpreter and requires no installation.
+**LANFind** is a lightweight LAN discovery tool packaged as an **AppImage**.  
+It uses **AWK** and **shell scripting** to detect your local IPv4 subnet and scan for live hosts using `nmap`.  
+
+LANFind is fully portable — it comes with its own `gawk` interpreter and doesn’t require installation.
+
+---
 
 ## Features
 
-- Automatic subnet detection via `ip a`
-- Host discovery using `nmap -sn`
-- AWK-powered parsing and formatting of scan results
-- ASCII logo display for bardic flair
-- AppImage launcher with terminal-awareness (GUI fallback via `kdialog`)
-- GPL v3 or later licensed—free as in config freedom
+- **Automatic subnet detection** using `ip a`
+- **Live host discovery** with `nmap -sn`
+- **AWK-powered result parsing** and formatted output
+- **Optional ASCII logo** for fun, themed output
+- **Portable AppImage** with terminal detection  
+  (shows a friendly GUI message via `kdialog` if launched without a terminal)
+- **Free and open source** under the GPL v3 or later
+
+---
 
 ## Project Structure
 
 ```
 lanfind-app/
-├── AppRun                     # Entry point launcher
-├── lanfind.desktop           # Desktop integration scroll
-├── lanfind.png               # Icon glyph
+├── AppRun                     # AppImage entry point
+├── lanfind.desktop             # Desktop entry file
+├── lanfind.png                 # Application icon
 ├── usr/
 │   ├── bin/
-│   │   ├── gawk              # Bundled AWK interpreter
-│   │   ├── get_subnet.awk    # Subnet extraction script
-│   │   ├── parse_nmap.awk    # Scan result parser
-│   │   └── run_lanfind       # Main shell script
+│   │   ├── gawk               # Bundled AWK interpreter
+│   │   ├── get_subnet.awk     # Script for detecting subnet
+│   │   ├── parse_nmap.awk     # Script for parsing nmap output
+│   │   └── run_lanfind        # Main shell script
 │   └── share/doc/lanfind/
-│       ├── LICENSE           # GPL v3 license scroll
-│       └── README.md         # This documentation
+│       ├── LICENSE            # GPL v3 license text
+│       └── README.md          # Documentation (this file)
 ```
+
+---
 
 ## Usage
 
+Run LANFind from the `usr/bin` directory (required for relative paths):
+
 ```bash
-# Run from usr/bin directory (required for relative paths)
 cd usr/bin
 
-./run_lanfind -c              # Output to console
-./run_lanfind -o results.txt  # Output to file
-./run_lanfind -l              # Show ASCII logo
+./run_lanfind -c              # Show scan results in the console
+./run_lanfind -o results.txt  # Save scan results to a file
+./run_lanfind -l              # Display ASCII logo
 ```
 
-Or launch via AppImage:
+Or launch the AppImage directly:
 
 ```bash
 ./LANFind-x86_64.AppImage
 ```
 
-If no terminal is detected, a GUI dialog will inform the user that LANFind is a command-line tool.
+If no terminal is detected, LANFind will show a small dialog explaining that it’s a command-line tool.
+
+---
 
 ## Requirements
 
-- `nmap` must be installed on the host system
-- Shell environment with basic POSIX utilities
-- AppImage-compatible Linux distro
+- `nmap` installed on the system  
+- A POSIX-compatible shell environment  
+- A Linux distribution that supports **AppImage**
+
+---
 
 ## License
 
-This project is licensed under the **GNU General Public License v3.0 or later**.  
-See the `LICENSE` file in `usr/share/doc/lanfind/` for full terms.
+**LANFind** is released under the **GNU General Public License v3.0 or later**.  
+You can find the full license in:
+
+```
+usr/share/doc/lanfind/LICENSE
+```
+
+---
 
 ## Credits
 
-Crafted by **Gregor**, config bard and LAN folklorist.  
-LANFind is a shrine-safe relic designed for clarity, portability, and remixable discovery.
+Created by **Gregor** — a curious tinkerer of configs and local networks.  
+LANFind was built for clarity, portability, and easy remixing.  
+
+---
 
 ## AppImage Notes
 
-- `.DirIcon` is symlinked to `lanfind.png` for embedded icon support
-- `AppRun` detects terminal presence and invokes `run_lanfind`
-- Desktop integration provided via `lanfind.desktop`
+- `.DirIcon` is symlinked to `lanfind.png` (for embedded icon support)
+- `AppRun` automatically detects if a terminal is available and launches `run_lanfind`
+- `lanfind.desktop` provides optional desktop integration
 
-For future shrine builders, remixers, and network sages—LANFind is yours to explore.
+---
+
+**LANFind** is designed for anyone who enjoys understanding their network in a simple, portable way.  
+Scan, discover, and explore your local LAN — no installation required.
